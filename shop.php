@@ -84,8 +84,11 @@ $db = new mysqli("localhost", "root", "", "shop"); ?>
 if (isset($_POST['submitted'])) {
     $rowCount = count($_POST['item']);
     for ($i = 0; $i < $rowCount; $i++) {
-        
-        $db->query("delete from products where name like '".$_POST['item'][$i]."';");
+
+$q = $db->prepare("delete from products where name like ?");
+$q -> bind_param("s", $_POST['item'][$i]);
+$q.execute();
+        //$db->query("delete from products where name like '".$_POST['item'][$i]."';");
     }
 
     session_unset();
